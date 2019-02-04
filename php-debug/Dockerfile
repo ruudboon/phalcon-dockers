@@ -206,7 +206,7 @@ RUN \
     && pecl install yaml \
     && pecl install redis \
     && pecl install xdebug-2.7.0beta1 \
-    && docker-php-ext-enable yaml redis xdebug \
+    && docker-php-ext-enable yaml redis \
     && docker-php-ext-install gettext \
     && docker-php-ext-enable gettext \
     && docker-php-ext-install gd \
