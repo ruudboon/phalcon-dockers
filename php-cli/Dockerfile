@@ -17,13 +17,13 @@ RUN \
         pcre-dev \
         file \
         re2c \
-        make \  
-    && pecl install psr \  
-    && docker-php-ext-enable psr \ 
-    && curl -sS -o /tmp/phalcon.tar.gz https://codeload.github.com/phalcon/cphalcon/tar.gz/4.0.x \
+        make \
+    && pecl install psr \
+    && docker-php-ext-enable psr \
+    && curl -sS -o /tmp/phalcon.tar.gz https://codeload.github.com/phalcon/cphalcon/tar.gz/v4.0.0-alpha.2 \
     && cd /tmp/ \
     && tar xvzf phalcon.tar.gz \
-    && cd cphalcon-4.0.x/build \
+    && cd cphalcon-4.0.0-alpha.2/build \
     && sh install \
     && docker-php-ext-enable phalcon --ini-name z-docker-php-ext-phalcon.ini \
     && pecl install yaml \
@@ -37,7 +37,7 @@ RUN \
     && docker-php-ext-install pdo_pgsql \
     && docker-php-ext-enable pdo_pgsql \
     && apk del build-dependencies \
-    && rm -rf cphalcon-4.0.x \
+    && rm -rf cphalcon-4.0.0-alpha.2 \
         4.0.x \
         /var/cache/apk/* \
         /tmp/* \
