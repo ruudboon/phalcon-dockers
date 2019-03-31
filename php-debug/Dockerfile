@@ -197,10 +197,12 @@ RUN \
         make \
     && pecl install psr \
     && docker-php-ext-enable psr \
-    && curl -sS -o /tmp/phalcon.tar.gz https://codeload.github.com/phalcon/cphalcon/tar.gz/v4.0.0-alpha.2 \
+    && curl -sS -o /tmp/phalcon.tar.gz https://codeload.github.com/phalcon/cphalcon/tar.gz/v4.0.0-alpha.4 \
     && cd /tmp/ \
     && tar xvzf phalcon.tar.gz \
-    && cd cphalcon-4.0.0-alpha.2/build \
+    && cd cphalcon-4.0.0-alpha.4/build \
+    && sed -i 's/-march=native//g' install \
+    && cat install \
     && sh install \
     && docker-php-ext-enable phalcon --ini-name z-docker-php-ext-phalcon.ini \
     && pecl install yaml \
@@ -214,7 +216,7 @@ RUN \
     && docker-php-ext-install pdo_pgsql \
     && docker-php-ext-enable pdo_pgsql \
     && apk del build-dependencies \
-    && rm -rf cphalcon-4.0.0-alpha.2 \
+    && rm -rf cphalcon-4.0.0-alpha.4 \
         4.0.x \
         /var/cache/apk/* \
         /tmp/* \
