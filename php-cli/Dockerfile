@@ -28,7 +28,7 @@ RUN \
     && docker-php-ext-enable phalcon --ini-name z-docker-php-ext-phalcon.ini \
     && pecl install yaml \
     && pecl install redis \
-    && pecl install xdebug-2.7.0 \
+    && pecl install xdebug-2.7.2 \
     && docker-php-ext-enable yaml redis xdebug \
     && docker-php-ext-install gettext \
     && docker-php-ext-enable gettext \
