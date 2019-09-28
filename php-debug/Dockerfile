@@ -186,7 +186,7 @@ CMD ["php", "-a"]
 
 RUN docker-php-ext-install pdo_mysql
 RUN apk --update add bash yaml-dev fcgi composer gettext-dev libpng-dev postgresql-dev gdb
-
+RUN docker-php-ext-install memcached
 RUN \
     apk add --virtual build-dependencies \
         autoconf \
@@ -197,17 +197,17 @@ RUN \
         make \
     && pecl install psr \
     && docker-php-ext-enable psr \
-    && curl -sS -o /tmp/phalcon.tar.gz https://codeload.github.com/phalcon/cphalcon/tar.gz/v4.0.0-alpha.4 \
+    && curl -sS -o /tmp/phalcon.tar.gz https://codeload.github.com/phalcon/cphalcon/tar.gz/v4.0.0-rc.1 \
     && cd /tmp/ \
     && tar xvzf phalcon.tar.gz \
-    && cd cphalcon-4.0.0-alpha.4/build \
+    && cd cphalcon-4.0.0-rc.1/build \
     && sed -i 's/-march=native//g' install \
     && cat install \
     && sh install \
     && docker-php-ext-enable phalcon --ini-name z-docker-php-ext-phalcon.ini \
     && pecl install yaml \
     && pecl install redis \
-    && pecl install xdebug-2.7.0 \
+    && pecl install xdebug-2.7.2 \
     && docker-php-ext-enable yaml redis \
     && docker-php-ext-install gettext \
     && docker-php-ext-enable gettext \
@@ -216,8 +216,7 @@ RUN \
     && docker-php-ext-install pdo_pgsql \
     && docker-php-ext-enable pdo_pgsql \
     && apk del build-dependencies \
-    && rm -rf cphalcon-4.0.0-alpha.4 \
-        4.0.x \
+    && rm -rf cphalcon-4.0.0-rc.1 \
         /var/cache/apk/* \
         /tmp/* \
         /var/tmp/*
