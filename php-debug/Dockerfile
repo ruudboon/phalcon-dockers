@@ -208,6 +208,8 @@ RUN \
     && pecl install yaml \
     && pecl install redis \
     && pecl install xdebug-2.7.2 \
+    && pecl install memcached \
+    && docker-php-ext-install memcached \
     && docker-php-ext-enable yaml redis \
     && docker-php-ext-install gettext \
     && docker-php-ext-enable gettext \
