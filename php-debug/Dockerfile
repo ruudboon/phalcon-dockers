@@ -186,6 +186,11 @@ CMD ["php", "-a"]
 
 RUN docker-php-ext-install pdo_mysql
 RUN apk --update add bash yaml-dev fcgi composer gettext-dev libpng-dev postgresql-dev gdb libmemcached-dev
+
+# Zephir
+RUN curl -sSL -o /usr/bin/zephir https://github.com/phalcon/zephir/releases/download/0.12.4/zephir.phar \
+    && chmod +x /usr/bin/zephir
+RUN echo 'memory_limit = -1' >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini;
 RUN \
     apk add --virtual build-dependencies \
         autoconf \
@@ -202,11 +207,21 @@ RUN \
     && docker-php-ext-enable psr \
     && pecl install memcached \
     && docker-php-ext-enable memcached \
+    && curl -sS -o /tmp/php-zephir-parser.gz https://codeload.github.com/phalcon/php-zephir-parser/tar.gz/v1.3.1 \
+    && cd /tmp \
+    && tar xvzf php-zephir-parser.gz \
+    && cd php-zephir-parser-1.3.1 \
+    && phpize \
+    && ./configure --with-php-config=$(which php-config) \
+    && make -j"$(getconf _NPROCESSORS_ONLN)" \
+    && make install \
+    && rm -Rf php-zephir-parser-1.3.1 \
+    && docker-php-ext-enable zephir_parser \
     && curl -sS -o /tmp/phalcon.tar.gz https://codeload.github.com/phalcon/cphalcon/tar.gz/4.0.x \
     && cd /tmp/ \
     && tar xvzf phalcon.tar.gz \
-    && cd cphalcon-4.0.x/build \
-    && sh install \
+    && cd cphalcon-4.0.x \
+    && zephir build \
     && docker-php-ext-enable phalcon --ini-name z-docker-php-ext-phalcon.ini \
     && pecl install yaml \
     && pecl install redis \
@@ -225,7 +240,6 @@ RUN \
         /var/tmp/*
 
 RUN echo "apc.enable_cli = on;" >> /usr/local/etc/php/conf.d/20-docker-php-ext-apc.ini
-RUN ulimit -c unlimited
 
 RUN curl -LsS https://codeception.com/codecept.phar -o /usr/local/bin/codecept
 RUN chmod a+x /usr/local/bin/codecept
