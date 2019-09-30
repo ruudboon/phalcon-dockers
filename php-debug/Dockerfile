@@ -233,7 +233,6 @@ RUN \
     && ./configure --silent --enable-phalcon CFLAGS="-g -O0" --with-php-config=$(which php-config) \
     && make \
     && make install \
-    && cp /tmp/cphalcon-4.0.x/ext/modules/phalcon123.so ${PHP_DIR} \
     && docker-php-ext-enable phalcon --ini-name z-docker-php-ext-phalcon.ini \
     && pecl install yaml \
     && pecl install redis \
